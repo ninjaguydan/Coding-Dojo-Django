@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You!</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Submitted Results</h1>
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td>{{request.session.name}}</td>
+            </tr>
+            <tr>
+                <td>Dojo Location:</td>
+                <td>{{request.session.location}}</td>
+            </tr>
+            <tr>
+                <td>Favorite Language:</td>
+                <td>{{request.session.language}}</td>
+            </tr>
+            <tr>
+                <td>Comment:</td>
+                <td>{{request.session.message}}</td>
+            </tr>
+        </table>
+    
+    <a href="/" class="button">Go Back</a>
+    </div>    
+</body>
+</html>

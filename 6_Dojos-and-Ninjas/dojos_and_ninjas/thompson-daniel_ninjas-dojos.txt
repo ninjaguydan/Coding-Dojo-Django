@@ -1,0 +1,38 @@
+python manage.py shell
+from dojo_ninjas_app.models import Dojo, Ninja
+
+Dojo.objects.create(name="dojo1", city="jackson", state="MS")
+Dojo.objects.create(name="dojo2", city="dallas", state="GA")
+Dojo.objects.create(name="dojo3", city="gretna", state="LA")
+
+Dojo.objects.all().delete()
+
+Dojo.objects.create(name="dojo4", city="jackson", state="MS")
+Dojo.objects.create(name="dojo5", city="dallas", state="GA")
+Dojo.objects.create(name="dojo6", city="gretna", state="LA")
+
+Ninja.objects.create(first_name="Dan", last_name="Thomp", dojo=Dojo.objects.get(id=4))
+Ninja.objects.create(first_name="Kay", last_name="Den", dojo=Dojo.objects.get(id=4))
+Ninja.objects.create(first_name="Kel", last_name="John", dojo=Dojo.objects.get(id=4))
+
+second = Dojo.objects.get(id=5)
+Ninja.objects.create(first_name="Bob", last_name="Ross", dojo=second)
+Ninja.objects.create(first_name="Bel", last_name="Dal", dojo=second)
+Ninja.objects.create(first_name="Josh", last_name="V", dojo=second)
+
+third=Dojo.objects.get(id=6)
+Ninja.objects.create(first_name="Ben", last_name="Dover", dojo=third)
+Ninja.objects.create(first_name="Joe", last_name="Biden", dojo=third)
+Ninja.objects.create(first_name="Mike", last_name="Bison", dojo=third)
+
+Ninja.objects.filter(dojo=Dojo.objects.get(id=4))
+Ninja.objects.filter(dojo=third)
+
+last_ninja=Ninja.objects.last()
+print(last_ninja.dojo.__dict__)
+
+desc = models.TextField(null=True)
+python manage.py makemigrations
+python manage.py migrate
+
+Dojo.objects.create(name="dojoNEW", city="New York", state="NY", desc="This field is new af")

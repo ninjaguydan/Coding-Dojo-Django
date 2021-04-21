@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books & Authors</title>
+</head>
+<body>
+    <h1>{{author.first_name}} {{author.last_name}}</h1>
+    <h3>ID: {{author.id}}</h3>
+    <h3>Notes: {{author.notes}}</h3>
+    <h3>Books:</h3>
+    <ul>
+        {% for book in books %}
+            <li>{{book.title}}</li>
+        {% endfor %}
+    </ul>
+    <form action="/author_index/{{author.id}}/append" method="POST">
+        {% csrf_token %}
+        <select name="books" id="">
+            {% for book in excluded_books %}
+            <option value="{{book.title}}">{{book.title}}</option>
+            {% endfor %}
+        </select>
+        <button>Add</button>
+    </form>
+    <a href="/author_index/{{author.id}}/remove">Remove All</a> 
+</body>
+</html>
