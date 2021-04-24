@@ -10,7 +10,6 @@ def index(request):
 def register(request):
     errors = User.objects.basic_validator(request.POST)
     if errors:
-        print(f"the value being passed back is {request.POST['bdate']}")
         for key, value in errors.items():
             messages.error(request, value)
         return redirect("/")
@@ -27,6 +26,23 @@ def register(request):
         )
         return redirect("/welcome")
 
+def login(request):
+    user = User.objects.filter(email = request.POST['email'])
+    if user:
+        logged_user = user[0]
+        if bcrypt.checkpw(request.POST['pw'].encode(), logged_user.password.encode()):
+            request.session['userid'] = logged_user.id
+            return redirect("/welcome")
+    return redirect("/")
+
 def welcome(request):
-    return render(request, "welcome.html")
+    if 'userid' not in request.session:
+        return redirect('/')
+    user = User.objects.get(id=request.session['userid'])
+    context = {'user': user }
+    return render(request, 'welcome.html', context)
+
+def logout(request):
+    request.session.clear()
+    return redirect("/")
 
