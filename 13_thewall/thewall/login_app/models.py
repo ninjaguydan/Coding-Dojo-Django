@@ -3,7 +3,6 @@ import re
 from datetime import timedelta, datetime
 
 # Create your models here.
-
 class UserManager(models.Manager):
     def basic_validator(self, postData):
         errors = {}

@@ -29,4 +29,7 @@ def post_comment(request):
     message = Message.objects.get(id = request.POST['msg_id'])
     user  = User.objects.get(id = request.session['userid'])
     Comment.objects.create(content = request.POST['message'], user = user, message = message)
-    return redirect("/wall/")
+    context = {
+        "messages" : Message.objects.all()
+    }
+    return render(request, "wall-partial.html", context)

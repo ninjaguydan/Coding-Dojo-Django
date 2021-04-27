@@ -1,0 +1,33 @@
+{% for message in messages %}
+    <li class="list-group-item">
+        <p style="color: royalblue;">{{message.user.first_name}} {{message.user.last_name}} <span style="color: gray; font-style: italic;">{{message.created_at}}</span></p>
+        <p>{{message.content}}
+            {% if message.user.id == request.session.userid %}
+            <form action="wall/destroy_message" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="msg_id" value="{{message.id}}">
+                <input type="submit" value="Delete">
+            </form>
+            {% endif %}
+        </p>
+        <ul class="list-group">
+            {% for comment in message.comments.all %}
+            <li class="list-group-item">
+                <p style="color: royalblue;">{{comment.user.first_name}} {{comment.user.last_name}} <span style="color: gray; font-style: italic;">{{comment.created_at}}</span></p>
+                <p>{{comment.content}}</p>
+            </li>
+            {% endfor %}
+            <li class="list-group-item">
+                <form action="wall/post_comment" method="POST" class="comment-form">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <label>Leave a comment</label><br>
+                        <textarea name="message" class="form-control" rows="3"></textarea>
+                    </div><br>
+                    <input type="hidden" name="msg_id" value="{{message.id}}">
+                    <button class="btn btn-primary" style="background-color: green; display: block; margin-left: auto;">Leave a comment</button>
+                </form>
+            </li>
+        </ul>
+    </li>
+{% endfor %}
