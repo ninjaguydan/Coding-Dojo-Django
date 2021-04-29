@@ -1,5 +1,6 @@
 from django.db import models
 import re
+import bcrypt
 
 class UserManager(models.Manager):
     def validator(self, postData):
@@ -18,6 +19,22 @@ class UserManager(models.Manager):
         if postData['pw'] != postData['confirm']:
             errors['password'] = "Passwords do not match"
         return errors
+    
+    def authenticate(self, email, password):
+        users = self.filter(email = email)
+        if not users:
+            return False
+        user = users[0]
+        return bcrypt.checkpw(password.encode(), user.password.encode())
+
+    def register(self, form):
+        pw = bcrypt.hashpw(form['pw'].encode(), bcrypt.gensalt()).decode()
+        return self.create(
+            first_name = form['fname'],
+            last_name = form['lname'],
+            email = form['email'],
+            password = pw,
+        )
 
 # Create your models here.
 class User(models.Model):
