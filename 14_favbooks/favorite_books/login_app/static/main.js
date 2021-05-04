@@ -6,9 +6,9 @@ $('.container').on('submit', '#registration', function(e){
         data: $(this).serialize(),
         success: function(){
             if ($('.pw').val() !== $('.confirm').val()) {
-                $('#confirm-pw-input p').css("display", "block");
+                $('#confirm-pw-input p').show(100);
             } else {
-                $('#confirm-pw-input p').css("display", "none");
+                $('#confirm-pw-input p').hide(100);
             }
         }
     })

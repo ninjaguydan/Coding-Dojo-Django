@@ -7,7 +7,7 @@
 <div class="container">
     <div class="wrapper">
         <h2>Login</h2>
-        <form action="" method="POST" id="login">
+        <form action="/login" method="POST" id="login">
             {% csrf_token %}
             <div class = "form-row">
                 <label>Email</label>
@@ -21,7 +21,7 @@
                     <input type="password" name="pw" class="form-control">
                 </div>
             </div>
-            <button class="btn btn-primary">Log In</button><a href="">Proceed with Dummi Account</a>
+            <button class="btn btn-primary">Log In</button><a href="/dummi">Proceed with Dummi Account</a>
         </form>
     </div><!--wrapper-->
 </div><!--container-->

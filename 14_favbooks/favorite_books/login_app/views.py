@@ -4,7 +4,9 @@ from .models import *
 
 # Create your views here.
 def index(request):
-    return render(request, "index.html")
+    if request.method == "GET":
+        return render(request, "index.html")
+    return redirect('/')
 
 def login(request):
     if request.method == "GET":
@@ -14,7 +16,7 @@ def login(request):
         return redirect('/')
     user = User.objects.get(email= request.POST['email'])
     request.session['userid'] = user.id
-    return
+    return redirect("/books")
 
 def register(request):
     return render(request, "register.html")
@@ -30,5 +32,8 @@ def signup(request):
     else:
         new_user = User.objects.register(request.POST)
         request.session['userid'] = new_user.id
-        return
+        return redirect("/books")
+
+def dummi_login(request):
+    return redirect("/books")
 

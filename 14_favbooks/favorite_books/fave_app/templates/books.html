@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Favorite Books{% endblock %}
+
+{% block content %}
+<h2>Welcome {{user.first_name}}</h2>
+<a href="/books/logout">Log out</a>
+
+<div class="container">
+    <h3>Add a Favorite Book</h3>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form action="/books/add" method="POST">
+        {% csrf_token %}
+        <div class="form-row">
+            <label>Title</label>
+            <div>
+                <input type="text" name="title" class="form-control">
+            </div>
+        </div>
+        <div class="form-row">
+            <label>Description</label>
+            <div>
+                <textarea name="desc" rows="5" class="form-control"></textarea>
+            </div>
+        </div>
+        <button>Add</button>
+    </form>
+</div>
+
+<div class="container">
+    <h3>All Books</h3>
+    <ul>
+        {% for book in books %}
+        <li>
+            <a href=""><h4>{{book.title}}</h4></a>
+            <p>Added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}} </p>
+            {% if book in user.books.all %}
+            <p>This is one of your Favorites!</p>
+            {% else %}
+            <a href="">Add to favorites</a>
+            {% endif %}
+            <hr>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
