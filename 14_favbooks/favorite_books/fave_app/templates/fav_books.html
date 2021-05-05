@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Favorite Books{% endblock %}
+
+{% block content %}
+<h2>Welcome {{user.first_name}}</h2>
+<a href="/books/logout">Log out</a>
+<a href="/books">Go Back</a>
+
+<div class="container">
+    {% if user.id == book.uploaded_by.id %}
+    <form action="/books/{{book.id}}/update" method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" value="{{book.title}}">
+        <p>Added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+        <p>Added on {{book.created_at}}</p>
+        <p>Last updated on {{book.updated_at}}</p>
+        <label>Description:</label>
+        <textarea name="desc" rows="5">{{book.desc}}</textarea>
+        <button>Update</button> <a href="/books/{{book.id}}/delete">Delete</a>
+    </form>
+    {% else %}
+    <h3>{{book.title}}</h3>
+    <p>Added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+    <p>Added on {{book.created_at}}</p>
+    <p>Last updated on {{book.updated_at}}</p>
+    <p>Description: {{book.desc}}</p>
+    {% endif %}
+</div>
+
+<div class="container">
+    <h3>Users Who Like This Book</h3>
+    <ul>
+        {% for u in book.users.all %}
+        <li>{{u.first_name}} {{u.last_name}}</li>
+        {% endfor %}
+    </ul>
+    {% if user not in book.users.all %}
+    <a href="/books/{{book.id}}/fav">Add to favorites</a>
+    {% else %}
+    <a href="/books/{{book.id}}/unfav">Unfavorite</a>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}

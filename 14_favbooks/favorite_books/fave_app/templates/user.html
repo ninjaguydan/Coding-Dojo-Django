@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Keeper | {{user.first_name}} {{user.last_name}}{% endblock %}
+
+{% block content %}
+<h2>Welcome {{user.first_name}}</h2>
+<a href="/books/logout">Log out</a>
+<a href="/books">Go Back</a>
+
+<div class="container">
+    <h2>{{profile.first_name}} {{profile.last_name}}</h2>
+    <h3>Favorites</h3>
+    {% if user.books %}
+    <ul>
+        {% for book in user.books.all %}
+        <li>
+            <h4>{{book.title}}</h4>
+            <p>Uploaded by <a href="/books/{{book.uploaded_by.id}}/profile">{{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</a></p>
+            <p>{{book.desc}}</p>
+            <hr>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No Favorites :(</p>
+    {% endif %}
+</div>
+
+<div class="container">
+    <h3>Uploades</h3>
+    <ul>
+        {% for book in profile.books_uploaded.all %}
+        <li>{{book.title}}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

@@ -38,12 +38,12 @@
     <ul>
         {% for book in books %}
         <li>
-            <a href=""><h4>{{book.title}}</h4></a>
-            <p>Added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}} </p>
+            <a href="/books/{{book.id}}"><h4>{{book.title}}</h4></a>
+            <p>Added by <a href="/books/{{book.uploaded_by.id}}/profile">{{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</a></p>
             {% if book in user.books.all %}
             <p>This is one of your Favorites!</p>
             {% else %}
-            <a href="">Add to favorites</a>
+            <a href="/books/{{book.id}}/fav">Add to favorites</a>
             {% endif %}
             <hr>
         </li>
