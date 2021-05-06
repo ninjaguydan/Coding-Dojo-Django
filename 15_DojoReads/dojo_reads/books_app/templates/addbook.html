@@ -1,0 +1,67 @@
+{% extends 'base.html'  %}
+
+{% block nav %}
+<h2>Welcome, {{user.first_name}}!</h2>
+<ul>
+    <li><a href="/books/">Home</a></li>
+    <li><a href="/books/logout">Logout</a></li>
+</ul>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <h3>Add a New Book</h3>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{message}}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form action="/books/addbook/add" method="POST">
+        {% csrf_token %}
+        <div>
+            <label>Book Title</label>
+            <div>
+                <input type="text" name="title">
+            </div>
+        </div>
+        <div>
+            <label>Author:</label>
+            <div>
+                <select name="author">
+                    {% for author in authors %}
+                    <option value="{{author.name}}">{{author.name}}</option>
+                    {% endfor %}
+                </select>
+                <p>Or add a new author</p>
+                <input type="text" name="new_author">
+            </div>
+        </div>
+        <div>
+            <label>Description</label>
+            <div>
+                <textarea name="desc" rows="5"></textarea>
+            </div>
+        </div>
+        <div>
+            <label>Review</label>
+            <div>
+                <textarea name="review" rows="5"></textarea>
+            </div>
+        </div>
+        <div>
+            <label>Rating</label>
+            <select name="rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <button>Add Book</button>
+    </form>
+</div>
+{% endblock %}

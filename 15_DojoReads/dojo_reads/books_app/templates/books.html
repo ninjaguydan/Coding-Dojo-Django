@@ -1,0 +1,38 @@
+{% extends 'base.html'  %}
+
+{% block nav %}
+<h2>Welcome, {{user.first_name}}!</h2>
+<ul>
+    <li><a href="/books/addbook">Add Book & Review</a></li>
+    <li><a href="/books/logout">Logout</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Recent Book Reviews</h3>
+    {% if books %}
+    <ul>
+        {% for book in books %}
+        <li>
+            <a href="">{{book.title}}</a>
+            {% for review in book.reviews.all %}
+                <p>Rating: {{review.rating}} Stars</p>
+                <p><a href="">{{review.user.first_name}}</a> says: {{review.content}}</p>
+                <p>{{review.created_at}}</p>
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+<div class="container">
+    <h3>Other Books with Reviews</h3>
+    <ul>
+        {% for book in books %}
+        <li><a href="">{{book.title}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
