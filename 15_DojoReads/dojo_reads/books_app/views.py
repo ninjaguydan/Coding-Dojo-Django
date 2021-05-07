@@ -10,6 +10,7 @@ def logout(request):
 def books(request):
     context = {
         "user" : User.objects.get(id = request.session['userid']),
+        "reviews" : Review.objects.all(),
         "books" : Book.objects.all(),
         }
     return render(request,'books.html', context)
@@ -48,3 +49,31 @@ def add(request):
         )
     return redirect('/books')
         
+def display_book(request, book_id):
+    book = Book.objects.get(id = book_id)
+    user = User.objects.get(id = request.session['userid'])
+    if request.method == "GET":
+        context = {
+            "user" : user,
+            "book" : book,
+        }
+        return render(request, "reviews.html", context)
+    errors = Review.objects.validator(request.POST)
+    if errors:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect(f'/books/{book_id}')
+    Review.objects.create(
+        content=request.POST['review'], 
+        rating=request.POST['rating'],
+        book=book,
+        user=user
+        )
+    return redirect(f'/books/{book_id}')
+
+def display_profile(request, profile_id):
+    context = {
+        "profile" : User.objects.get(id=profile_id),
+        "user" : User.objects.get(id=request.session['userid']),
+    }
+    return render(request, "user.html", context)

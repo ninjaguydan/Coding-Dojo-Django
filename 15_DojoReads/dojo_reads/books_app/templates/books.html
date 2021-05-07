@@ -11,20 +11,19 @@
 {% block content %}
 <div class="container">
     <h3>Recent Book Reviews</h3>
-    {% if books %}
     <ul>
-        {% for book in books %}
+        {% for review in reviews reversed %}
         <li>
-            <a href="">{{book.title}}</a>
-            {% for review in book.reviews.all %}
-                <p>Rating: {{review.rating}} Stars</p>
-                <p><a href="">{{review.user.first_name}}</a> says: {{review.content}}</p>
-                <p>{{review.created_at}}</p>
-            {% endfor %}
+            <a href="/books/{{review.book.id}}">{{review.book.title}}</a>
+            <p>Rating: {{review.rating}}</p>
+            <p><a href="/books/users/{{review.user.id}}">{{review.user.first_name}}</a> says: {{review.content}}</p>
+            <p>{{review.created_at}}</p>
+            <hr>
         </li>
+        {% empty %}
+        <li>No reviews yet!</li>
         {% endfor %}
     </ul>
-    {% endif %}
 </div>
 
 <div class="container">

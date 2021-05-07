@@ -15,6 +15,14 @@ class BookManager(models.Manager):
             errors['review'] = "Review must be longer than 10 characters"
         return errors
 
+class ReviewManager(models.Manager):
+    def validator(self, postData):
+        errors = {}
+        if len(postData['review']) < 10:
+            errors['review'] = "Review must be longer than 10 characters"
+        return errors
+
+
 # Create your models here.
 class Author(models.Model):
     name = models.CharField(max_length=50)
@@ -40,6 +48,7 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     #likes
+    objects = ReviewManager()
 
 class Like(models.Model):
     status = models.BooleanField()
