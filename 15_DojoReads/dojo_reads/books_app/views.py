@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
+from django.db.models import Q
 
 # Create your views here.
 def logout(request):
@@ -47,7 +48,13 @@ def add(request):
         book = new_book,
         user = user
         )
-    return redirect('/books')
+    return redirect(f'/books/{new_book.id}')
+
+def delete_review(request, review_id):
+    review_to_delete = Review.objects.get(id = review_id)
+    book_id = review_to_delete.book.id
+    review_to_delete.delete()
+    return redirect(f'/books/{book_id}')
         
 def display_book(request, book_id):
     book = Book.objects.get(id = book_id)
@@ -71,9 +78,38 @@ def display_book(request, book_id):
         )
     return redirect(f'/books/{book_id}')
 
+def favorite_book(request, book_id):
+    user = User.objects.get(id = request.session['userid'])
+    book = Book.objects.get(id = book_id)
+    user.favorites.add(book)
+    return redirect(f'/books/{book_id}')
+
+def unfavorite_book(request, book_id):
+    user = User.objects.get(id = request.session['userid'])
+    book = Book.objects.get(id = book_id)
+    user.favorites.remove(book)
+    return redirect(f'/books/{book_id}')
+
+def delete_book(request, book_id):
+    book = Book.objects.get(id = book_id)
+    if request.session['userid'] == book.added_by.id:
+        book.delete()
+        return redirect('/books/')
+    return redirect(f'/books/{book_id}')
+    
 def display_profile(request, profile_id):
     context = {
         "profile" : User.objects.get(id=profile_id),
         "user" : User.objects.get(id=request.session['userid']),
     }
     return render(request, "user.html", context)
+
+def likes(request, review_id):
+    user = User.objects.get(id = request.session['userid'])
+    review = Review.objects.get(id = review_id)
+    if review.likes.filter(user = user):
+        like = Like.objects.filter(Q(review = review), Q(user = user))
+        like.delete()
+    else:
+        Like.objects.create(review = review, user = user)
+    return redirect(f'/books/{review.book.id}')

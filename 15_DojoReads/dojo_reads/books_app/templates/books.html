@@ -1,7 +1,7 @@
 {% extends 'base.html'  %}
 
 {% block nav %}
-<h2>Welcome, {{user.first_name}}!</h2>
+<h2>Welcome, <a href="/books/users/{{user.id}}">{{user.first_name}}</a>!</h2>
 <ul>
     <li><a href="/books/addbook">Add Book & Review</a></li>
     <li><a href="/books/logout">Logout</a></li>
@@ -30,7 +30,7 @@
     <h3>Other Books with Reviews</h3>
     <ul>
         {% for book in books %}
-        <li><a href="">{{book.title}}</a></li>
+        <li><a href="/books/{{book.id}}">{{book.title}}</a></li>
         {% endfor %}
     </ul>
 </div>

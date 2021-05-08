@@ -1,7 +1,7 @@
 {% extends 'base.html'  %}
 
 {% block nav %}
-<h2>Welcome, {{user.first_name}}!</h2>
+<h2>Welcome, <a href="/books/users/{{user.id}}">{{user.first_name}}</a>!</h2>
 <ul>
     <li><a href="/books/">Home</a></li>
     <li><a href="/books/addbook">Add Book</a></li>
@@ -10,14 +10,36 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" >
     <h3>{{profile.first_name}} {{profile.last_name}}</h3>
     <p>{{profile.email}}</p>
     <p>Total Reviews: {{profile.reviews.all|length}}</p>
+    <p>Favorite Books:</p>
+    {% if user.id == profile.id %}
+    <ol id="sortable" style="width: 500px;">
+    {% else %}
+    <ol style="width: 500px;">
+    {% endif %}
+        {% for book in profile.favorites.all %}
+        <li><a href="/books/{{book.id}}">{{book.title}}</a></li>
+        {% empty %}
+        <li>No favorites yet</li>
+        {% endfor %}
+    </ol>
     <p>Posted Reviews on the following books:</p>
     <ul>
         {% for review in profile.reviews.all %}
         <li><a href="/books/{{review.book.id}}">{{review.book.title}}</a></li>
+        {% empty %}
+        <li>No reviews yet!</li>
+        {% endfor %}
+    </ul>
+    <p>Added the following books:</p>
+    <ul>
+        {% for book in profile.books_added.all %}
+        <li><a href="/books/{{book.id}}">{{book.title}}</a></li>
+        {% empty %}
+        <li>No Books Added!</li>
         {% endfor %}
     </ul>
 </div>

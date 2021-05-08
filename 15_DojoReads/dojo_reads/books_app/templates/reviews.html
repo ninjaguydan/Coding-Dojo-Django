@@ -1,7 +1,7 @@
 {% extends 'base.html'  %}
 
 {% block nav %}
-<h2>Welcome, {{user.first_name}}!</h2>
+<h2>Welcome, <a href="/books/users/{{user.id}}">{{user.first_name}}</a>!</h2>
 <ul>
     <li><a href="/books/">Home</a></li>
     <li><a href="/books/logout">Logout</a></li>
@@ -12,14 +12,25 @@
 <div class="container">
     <h2>{{book.title}}</h2>
     <p>Author: {{book.author.name}}</p>
+    <p>Added by: <a href="/books/users/{{book.added_by.id}}">{{book.added_by.first_name}} {{book.added_by.last_name}}</a></p>
+    <p>Description: {{book.desc}}</p>
+    {% if book not in user.favorites.all %}
+    <a href="/books/{{book.id}}/favorite">Add to Favorites</a>
+    {% else %}
+    <a href="/books/{{book.id}}/unfavorite">Remove from Favorites</a>
+    {% endif %}
     
     <h3>Reviews</h3>
     <ul>
-        {% for review in book.reviews.all %}
+        {% for review in book.reviews.all reversed %}
         <li>
             <p>Rating: {{review.rating}}</p>
             <p><a href="/books/users/{{review.user.id}}">{{review.user.first_name}}</a> says: {{review.content}}</p>
             <p>{{review.created_at}}</p>
+            <p><a href="/books/review/{{review.id}}/like"  style="{% for like in review.likes.all %}{% if user.id == like.user.id %} color:red; {% else %} color:gray; {% endif %}{% endfor %}" >&hearts;</a> {{review.likes.all|length}}</p>
+            {% if review.user.id == request.session.userid %}
+            <a href="/books/review/{{review.id}}">Delete</a>
+            {% endif %}
             <hr>
         </li>
         {% endfor %}
@@ -49,5 +60,9 @@
         </select>
         <button>Submit Review</button>
     </form>
+    <br>
+    {% if book.added_by.id == request.session.userid %}
+    <a href="/books/{{book.id}}/delete">Delete Book</a>
+    {% endif %}
 </div>
 {% endblock %}

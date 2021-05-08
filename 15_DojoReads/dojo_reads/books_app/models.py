@@ -35,6 +35,7 @@ class Book(models.Model):
     desc = models.TextField()
     author = models.ForeignKey(Author, related_name = "books", on_delete = models.CASCADE)
     added_by = models.ForeignKey(User, related_name = "books_added", on_delete = models.CASCADE)
+    favorited_by = models.ManyToManyField(User, related_name="favorites", blank=True)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     #reviews
@@ -51,7 +52,6 @@ class Review(models.Model):
     objects = ReviewManager()
 
 class Like(models.Model):
-    status = models.BooleanField()
     review = models.ForeignKey(Review, related_name = "likes", on_delete = models.CASCADE)
     user = models.ForeignKey(User, related_name = "likes", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
