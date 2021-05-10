@@ -9,6 +9,8 @@ def logout(request):
     return redirect('/')
 
 def books(request):
+    if not "userid" in request.session:
+        return redirect('/')
     context = {
         "user" : User.objects.get(id = request.session['userid']),
         "reviews" : Review.objects.all(),

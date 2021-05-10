@@ -1,11 +1,17 @@
 {% extends 'base.html'  %}
 
 {% block nav %}
-<h2>Welcome, <a href="/books/users/{{user.id}}">{{user.first_name}}</a>!</h2>
-<ul>
-    <li><a href="/books/">Home</a></li>
-    <li><a href="/books/logout">Logout</a></li>
-</ul>
+<div class="btn-group">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{user.first_name}} {{user.last_name}}
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="/books/users/{{user.id}}">Profile</a>
+        <a class="dropdown-item" href="/books/addbook">Add Book & Review</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/books/logout">Logout</a>
+    </div>
+</div>
 {% endblock %}
 
 
