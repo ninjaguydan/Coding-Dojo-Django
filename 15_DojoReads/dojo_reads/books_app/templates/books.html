@@ -17,12 +17,12 @@
 
 {% block content %}
 <div class="wrapper">
-    <h3 class="page-head">Recent Book Reviews</h3>
-    <ul class="list-group">
-        {% for review in reviews reversed %}
+    <ul class="list-group" style="margin-bottom: 30px;">
+        <li class="list-group-item"><h3 class="page-head">Recent Book Reviews</h3></li>
+        {% for review in reviews %}
         <li class="list-group-item">
-            <a class="review-head" href="/books/{{review.book.id}}">{{review.book.title}}</a>
-            <p>Rating: {{review.rating}}</p>
+            <a class="review-head" href="/books/{{review.book.id}}">{{review.book.title}}</a><br>
+            <span rating="{{review.rating}}">Rating: {{review.rating}}</span>
             <p><a href="/books/users/{{review.user.id}}">{{review.user.first_name}}</a> says: {{review.content}}</p>
             <p class="date">{{review.created_at}}</p>
         </li>
@@ -30,13 +30,11 @@
         <li>No reviews yet!</li>
         {% endfor %}
     </ul>
-</div>
 
-<div class="wrapper">
-    <h3>Other Books with Reviews</h3>
-    <ul>
+    <ul class="list-group books">
+        <li class="list-group-item"><h3 class="page-head">Other Books with Reviews</h3></li>
         {% for book in books %}
-        <li><a href="/books/{{book.id}}">{{book.title}}</a></li>
+        <li class="list-group-item"><a href="/books/{{book.id}}">{{book.title}}</a></li>
         {% endfor %}
     </ul>
 </div>

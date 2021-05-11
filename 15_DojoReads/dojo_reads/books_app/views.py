@@ -13,7 +13,7 @@ def books(request):
         return redirect('/')
     context = {
         "user" : User.objects.get(id = request.session['userid']),
-        "reviews" : Review.objects.all(),
+        "reviews" : Review.objects.all().order_by("-created_at")[:5],
         "books" : Book.objects.all(),
         }
     return render(request,'books.html', context)
