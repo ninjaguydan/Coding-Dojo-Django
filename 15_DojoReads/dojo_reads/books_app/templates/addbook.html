@@ -2,8 +2,8 @@
 
 {% block nav %}
 <div class="btn-group">
-    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{user.first_name}} {{user.last_name}}
+    <button type="button" class="btn btn-secondary dropdown-toggle btn-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{user.first_name}}
     </button>
     <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="/books/users/{{user.id}}">Profile</a>
@@ -16,8 +16,8 @@
 
 
 {% block content %}
-<div class="container">
-    <h3>Add a New Book</h3>
+<div class="add-book">
+    <h3 class="page-head">Add a New Book</h3>
     {% if messages %}
         <ul>
             {% for message in messages %}
@@ -27,39 +27,39 @@
     {% endif %}
     <form action="/books/addbook/add" method="POST">
         {% csrf_token %}
-        <div>
+        <div class="form-row">
             <label>Book Title</label>
             <div>
-                <input type="text" name="title">
+                <input type="text" name="title" class="form-control">
             </div>
         </div>
-        <div>
+        <div class="form-row">
             <label>Author:</label>
             <div>
-                <select name="author">
+                <select name="author" class="form-control">
                     {% for author in authors %}
                     <option value="{{author.name}}">{{author.name}}</option>
                     {% endfor %}
                 </select>
                 <p>Or add a new author</p>
-                <input type="text" name="new_author">
+                <input type="text" name="new_author" class="form-control">
             </div>
         </div>
-        <div>
+        <div class="form-row">
             <label>Description</label>
             <div>
-                <textarea name="desc" rows="5"></textarea>
+                <textarea name="desc" rows="5" class="form-control"></textarea>
             </div>
         </div>
-        <div>
+        <div class="form-row">
             <label>Review</label>
             <div>
-                <textarea name="review" rows="5"></textarea>
+                <textarea name="review" rows="5" class="form-control"></textarea>
             </div>
         </div>
-        <div>
+        <div class="form-row">
             <label>Rating</label>
-            <select name="rating">
+            <select name="rating" class="form-control">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -67,7 +67,9 @@
                 <option value="5">5</option>
             </select>
         </div>
-        <button>Add Book</button>
+        <div class="btn-container">
+            <button class="btn btn-primary">Add Book</button>
+        </div>
     </form>
 </div>
 {% endblock %}

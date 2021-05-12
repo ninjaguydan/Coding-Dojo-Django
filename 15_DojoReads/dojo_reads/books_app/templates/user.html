@@ -2,8 +2,8 @@
 
 {% block nav %}
 <div class="btn-group">
-    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{user.first_name}} {{user.last_name}}
+    <button type="button" class="btn btn-secondary dropdown-toggle btn-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{user.first_name}}
     </button>
     <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="/books/users/{{user.id}}">Profile</a>
@@ -15,37 +15,45 @@
 {% endblock %}
 
 {% block content %}
-<div class="container" >
-    <h3>{{profile.first_name}} {{profile.last_name}}</h3>
-    <p>{{profile.email}}</p>
-    <p>Total Reviews: {{profile.reviews.all|length}}</p>
-    
-    <p>Favorite Books:</p>
-    {% if user.id == profile.id %}
-    <ol id="sortable" class="list-group">
-    {% else %}
-    <ol style="width: 500px;">
-    {% endif %}
-        {% for book in profile.favorites.all %}
-        <li><a class="list-group-item list-group-item-action" href="/books/{{book.id}}">{{book.title}}</a></li>
-        {% empty %}
-        <li>No favorites yet</li>
-        {% endfor %}
-    </ol>
-    <p>Posted Reviews on the following books:</p>
-    <ul>
+<div class="profile" >
+    <div class="info-card" style="margin-bottom: 30px;">
+        <h3 class="page-head">{{profile.first_name}} {{profile.last_name}}</h3>
+        <p>{{profile.email}}</p>
+        <hr>
+        <p>Total Reviews: {{profile.reviews.all|length}}</p>
+    </div>
+
+    <div class="info-card" style="margin-bottom: 30px;">
+        <h4>Favorite Books:</h4>
+        {% if user.id == profile.id %}
+        <ol id="sortable" class="list-group">
+        {% else %}
+        <ol style="width: 500px;" class="list-group">
+        {% endif %}
+            {% for book in profile.favorites.all %}
+            <li><a class="list-group-item list-group-item-action" href="/books/{{book.id}}">{{book.title}}</a></li>
+            {% empty %}
+            <li>No favorites yet</li>
+            {% endfor %}
+        </ol>
+    </div>
+         
+    <ul class="list-group">
+        <li class="list-group-item"><h4>Posted Reviews on the following books:</h4></li>
         {% for review in profile.reviews.all %}
-        <li><a href="/books/{{review.book.id}}">{{review.book.title}}</a></li>
+        <li class="list-group-item"><a href="/books/{{review.book.id}}">{{review.book.title}}</a></li>
         {% empty %}
-        <li>No reviews yet!</li>
+        <li class="list-group-item">No reviews yet!</li>
         {% endfor %}
     </ul>
-    <p>Added the following books:</p>
-    <ul>
+        
+    
+    <ul class="list-group">
+        <li class="list-group-item"><h4>Added the following books:</h4></li>
         {% for book in profile.books_added.all %}
-        <li><a href="/books/{{book.id}}">{{book.title}}</a></li>
+        <li class="list-group-item"><a href="/books/{{book.id}}">{{book.title}}</a></li>
         {% empty %}
-        <li>No Books Added!</li>
+        <li class="list-group-item">No Books Added!</li>
         {% endfor %}
     </ul>
 </div>

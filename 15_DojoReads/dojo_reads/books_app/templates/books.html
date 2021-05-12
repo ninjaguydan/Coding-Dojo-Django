@@ -3,8 +3,8 @@
 
 {% block nav %}
 <div class="btn-group">
-    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{user.first_name}} {{user.last_name}}
+    <button type="button" class="btn btn-secondary dropdown-toggle btn-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{user.first_name}}
     </button>
     <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="/books/users/{{user.id}}">Profile</a>
@@ -22,7 +22,7 @@
         {% for review in reviews %}
         <li class="list-group-item">
             <a class="review-head" href="/books/{{review.book.id}}">{{review.book.title}}</a><br>
-            <span rating="{{review.rating}}">Rating: {{review.rating}}</span>
+            <span class="n{{review.rating}}">Rating: {{review.rating}}</span>
             <p><a href="/books/users/{{review.user.id}}">{{review.user.first_name}}</a> says: {{review.content}}</p>
             <p class="date">{{review.created_at}}</p>
         </li>

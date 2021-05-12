@@ -2,8 +2,8 @@
 
 {% block nav %}
 <div class="btn-group">
-    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{user.first_name}} {{user.last_name}}
+    <button type="button" class="btn btn-secondary dropdown-toggle btn-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{user.first_name}}
     </button>
     <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="/books/users/{{user.id}}">Profile</a>
@@ -15,60 +15,67 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>{{book.title}}</h2>
-    <p>Author: {{book.author.name}}</p>
-    <p>Added by: <a href="/books/users/{{book.added_by.id}}">{{book.added_by.first_name}} {{book.added_by.last_name}}</a></p>
-    <p>Description: {{book.desc}}</p>
-    {% if book not in user.favorites.all %}
-    <a href="/books/{{book.id}}/favorite">Add to Favorites</a>
-    {% else %}
-    <a href="/books/{{book.id}}/unfavorite">Remove from Favorites</a>
-    {% endif %}
-    
-    <h3>Reviews</h3>
-    <ul>
-        {% for review in book.reviews.all reversed %}
-        <li>
-            <p>Rating: {{review.rating}}</p>
-            <p><a href="/books/users/{{review.user.id}}">{{review.user.first_name}}</a> says: {{review.content}}</p>
-            <p>{{review.created_at}}</p>
-            <p><a href="/books/review/{{review.id}}/like"  style="{% for like in review.likes.all %}{% if user.id == like.user.id %} color:red; {% else %} color:gray; {% endif %}{% endfor %}" >&hearts;</a> {{review.likes.all|length}}</p>
-            {% if review.user.id == request.session.userid %}
-            <a href="/books/review/{{review.id}}">Delete</a>
+<div class="wrapper">
+    <div class="column">
+        <div class="info-card" style="margin-bottom: 30px;">
+            <h2 class="page-head">{{book.title}}</h2>
+            <p>Author: {{book.author.name}}</p>
+            <p>Added by: <a href="/books/users/{{book.added_by.id}}">{{book.added_by.first_name}} {{book.added_by.last_name}}</a></p><br>
+            <p>Description: {{book.desc}}</p><br>
+            {% if book not in user.favorites.all %}
+            <a href="/books/{{book.id}}/favorite">Add to Favorites</a>
+            {% else %}
+            <a href="/books/{{book.id}}/unfavorite">Remove from Favorites</a>
             {% endif %}
-            <hr>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-<div class="container">
-    <form action="/books/{{book.id}}" method="POST">
-        {% csrf_token %}
-        <label>Add a Review:</label>
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{message}}</li>
+        </div>
+    </div>
+        
+    
+    <div class="review">
+        <ul class="list-group">
+            <li class="list-group-item"><h3 class="page-head">Reviews</h3></li>
+            {% for review in book.reviews.all reversed %}
+            <li class="list-group-item">
+                <span class="n{{review.rating}}">Rating: {{review.rating}}</span>
+                <p><a href="/books/users/{{review.user.id}}">{{review.user.first_name}}</a> says: {{review.content}}</p>
+                <p class="date">{{review.created_at}}</p>
+                <p><a href="/books/review/{{review.id}}/like"  style="{% for like in review.likes.all %}{% if user.id == like.user.id %} color:red; {% else %} color:gray; {% endif %}{% endfor %}" >&hearts;</a> {{review.likes.all|length}}</p>
+                {% if review.user.id == request.session.userid %}
+                <a href="/books/review/{{review.id}}">Delete</a>
+                {% endif %}
+            </li>
             {% endfor %}
         </ul>
+
+        <form action="/books/{{book.id}}" method="POST" >
+            {% csrf_token %}
+            <label class="review-head">Add a Review:</label>
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="form-row">
+                <textarea name="review" cols="30" rows="10" class="form-control"></textarea>
+            </div>
+            <label>Rating</label>
+            <select name="rating"  class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <div class="btn-container">
+                <button class="btn btn-primary">Submit Review</button>
+            </div>
+        </form>
+        <br>
+        {% if book.added_by.id == request.session.userid %}
+        <a href="/books/{{book.id}}/delete">Delete Book</a>
         {% endif %}
-        <div>
-            <textarea name="review" cols="30" rows="10"></textarea>
-        </div>
-        <label>Rating</label>
-        <select name="rating">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-        <button>Submit Review</button>
-    </form>
-    <br>
-    {% if book.added_by.id == request.session.userid %}
-    <a href="/books/{{book.id}}/delete">Delete Book</a>
-    {% endif %}
+    </div>
 </div>
 {% endblock %}
