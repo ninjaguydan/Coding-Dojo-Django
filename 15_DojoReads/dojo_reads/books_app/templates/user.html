@@ -1,6 +1,16 @@
 {% extends 'base.html'  %}
 
 {% block nav %}
+{% if request.session.userid == 0 %}
+<div class="btn-group">
+    <button type="button" class="btn btn-secondary dropdown-toggle btn-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Dummi
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="/books/logout">Logout</a>
+    </div>
+</div>
+{% else %}
 <div class="btn-group">
     <button type="button" class="btn btn-secondary dropdown-toggle btn-nav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {{user.first_name}}
@@ -10,8 +20,12 @@
         <a class="dropdown-item" href="/books/addbook">Add Book & Review</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="/books/logout">Logout</a>
+        {% if user.id == 1 %}
+        <a class="dropdown-item" href="/books/admin">Admin</a>
+        {% endif %}
     </div>
 </div>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -28,7 +42,7 @@
         {% if user.id == profile.id %}
         <ol id="sortable" class="list-group">
         {% else %}
-        <ol style="width: 500px;" class="list-group">
+        <ol class="list-group">
         {% endif %}
             {% for book in profile.favorites.all %}
             <li><a class="list-group-item list-group-item-action" href="/books/{{book.id}}">{{book.title}}</a></li>

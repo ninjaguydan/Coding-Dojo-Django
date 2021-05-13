@@ -35,4 +35,5 @@ def signup(request):
         return redirect("/books")
 
 def dummi_login(request):
+    request.session['userid'] = 0
     return redirect("/books")
