@@ -139,17 +139,14 @@ def admin(request):
     }
     return render(request, "admin.html", context)
 
-# def likes(request, review_id):
-#     user = User.objects.get(id = request.session['userid'])
-#     review = Review.objects.get(id = review_id)
-#     if review.likes.filter(user = user):
-#         like = Like.objects.filter(Q(review = review), Q(user = user))
-#         like.delete()
-#         return redirect(f'/books/{review.book.id}')
-#     else:
-#         Like.objects.create(review = review, user = user)
-#     context = {
-#         "book" : Book.objects.get(id = review.book.id),
-#         "user" : user,
-#     }
-#     return render(request, "review-partial.html", context)
+def like(request, review_id):
+    user = User.objects.get(id = request.session['userid'])
+    review = Review.objects.get(id = review_id)
+    review.likes.add(user)
+    return redirect(f"/books/{review.book.id}")
+
+def unlike(request, review_id):
+    user = User.objects.get(id = request.session['userid'])
+    review = Review.objects.get(id = review_id)
+    review.likes.remove(user)
+    return redirect(f"/books/{review.book.id}")

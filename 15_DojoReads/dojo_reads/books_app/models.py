@@ -48,11 +48,5 @@ class Review(models.Model):
     user = models.ForeignKey(User, related_name = "reviews", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
-    #likes
+    likes = models.ManyToManyField(User, related_name = "liked_reviews")
     objects = ReviewManager()
-
-class Like(models.Model):
-    review = models.ForeignKey(Review, related_name = "likes", on_delete = models.CASCADE)
-    user = models.ForeignKey(User, related_name = "likes", on_delete = models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add = True)
-    updated_at = models.DateTimeField(auto_now = True)

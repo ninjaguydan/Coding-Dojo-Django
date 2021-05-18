@@ -54,7 +54,17 @@
                 <span class="n{{review.rating}}">Rating: {{review.rating}}</span>
                 <p><a href="/books/users/{{review.user.id}}">{{review.user.first_name}}</a> says: {{review.content}}</p>
                 <p class="date">{{review.created_at}}</p>
-                <!-- <p><a class="like" href="/books/review/{{review.id}}/like"  style="{% for like in review.likes.all %}{% if user.id == like.user.id %} color:red; {% else %} color:gray; {% endif %}{% endfor %}" >&hearts;</a> {{review.likes.all|length}}</p> -->
+
+                {% if request.session.userid != 0 %}
+                    {% if user in review.likes.all %}
+                    <p ><a href="/books/review/{{review.id}}/unlike" style="color: red;">&hearts;</a> {{review.likes.all|length}}</p>
+                    {% else %}
+                    <p><a href="/books/review/{{review.id}}/like" style="color: gray;">&hearts;</a> {{review.likes.all|length}}</p>
+                    {% endif %}
+                {% else %}
+                <p style="color:gray;">&hearts; {{review.likes.all|length}}</p>
+                {% endif %}
+
                 {% if review.user.id == request.session.userid %}
                 <a href="/books/review/{{review.id}}">Delete</a>
                 {% endif %}
